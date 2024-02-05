@@ -3,6 +3,10 @@
 #define _UNICODE
 #include <iostream>
 #include <tchar.h>// для макросов windows
+
+
+#include <locale>
+
 using namespace std;
 
 //1
@@ -18,7 +22,7 @@ void ReplaceSpacesWithTabs(TCHAR* str) {
 
 
 //2
-void countCharacters(const TCHAR* inputString, int& letterCount, int& digitCount, int& otherCount) {
+void countCharacters( TCHAR* inputString, int& letterCount, int& digitCount, int& otherCount) {
     while (*inputString) {
         TCHAR currentChar = *inputString;
 
@@ -35,30 +39,242 @@ void countCharacters(const TCHAR* inputString, int& letterCount, int& digitCount
         ++inputString;
     }
 }
+
+
+//3
+bool isWhitespace(TCHAR c) {
+    return c == _T(' ') || c == _T('\t') || c == _T('\n') || c == _T('\r');
+}
+
+int countWords( TCHAR* sentence) {
+    int wordCount = 0;
+    bool inWord = false;
+
+    while (*sentence) {
+        if (isWhitespace(*sentence)) {
+            inWord = false;
+        }
+        else if (!inWord) {
+            inWord = true;
+            ++wordCount;
+        }
+
+        ++sentence;
+    }
+
+    return wordCount;
+}
+
+//4
+bool isVowelRussian(TCHAR c) {
+    return (c == _T('а') || c == _T('е') || c == _T('ё') ||
+        c == _T('и') || c == _T('о') || c == _T('у') ||
+        c == _T('ы') || c == _T('э') || c == _T('ю') ||
+        c == _T('я') || c == _T('А') || c == _T('Е') ||
+        c == _T('Ё') || c == _T('И') || c == _T('О') ||
+        c == _T('У') || c == _T('Ы') || c == _T('Э') ||
+        c == _T('Ю') || c == _T('Я'));
+}
+
+int countVowelsRussian(TCHAR* text) {
+    int vowelCount = 0;
+
+    while (*text) {
+        if (isVowelRussian(*text)) {
+            ++vowelCount;
+        }
+
+        ++text;
+    }
+
+    return vowelCount;
+}
+
+
+//6
+void removeCharByIndex(_TCHAR* str, int index) {
+    if (index >= 0 && index < _tcslen(str)) {
+        _tcscpy(&str[index], &str[index + 1]);
+    }
+}
+
+//7
+void removeCharacter(_TCHAR* str, _TCHAR charToRemove) {
+    _TCHAR* pos = _tcschr(str, charToRemove);
+
+    while (pos != nullptr) {
+
+        _tcscpy(pos, pos + 1);
+
+        pos = _tcschr(str, charToRemove);
+
+    }
+}
+
+
+
+
+//8
+void insertCharAtPosition(_TCHAR* str, int position, _TCHAR charToInsert) {
+
+    if (position >= 0 && position <= _tcslen(str)) {
+
+        for (int i = _tcslen(str); i > position; i--) {
+            str[i] = str[i - 1];
+        }
+        str[position] = charToInsert;
+    }
+    else {
+        wcout << _TEXT("Ошибка") << endl;
+    }
+}
+
 int main()
 {
 
-    TCHAR inputString[] = _T("Hello123 World");
+    TCHAR inputString[] = _TEXT("Hello123 World");
 
    //1
     ReplaceSpacesWithTabs(inputString);
-
-   //1
-    wcout << _T("New string: ") << inputString << endl;
-
+    wcout << _TEXT("New string: ") << inputString << endl;
     int letterCount = 0;
     int digitCount = 0;
     int otherCount = 0;
 
     //2
     countCharacters(inputString, letterCount, digitCount, otherCount);
-
-    //2
-    wcout << _T("Letters: ") << letterCount << endl;
-    wcout << _T("Digits: ") << digitCount << endl;
-    wcout << _T("Other characters: ") << otherCount << endl;
+    wcout << _TEXT("Letters: ") << letterCount << endl;
+    wcout << _TEXT("Digits: ") << digitCount << endl;
+    wcout << _TEXT("Other characters: ") << otherCount << endl;
 
 
+    //3
+    TCHAR sentence[] = _TEXT("Step-the best.");
+    int wordCount = countWords(sentence);
+    wcout << _TEXT("Number of words: ") << wordCount << endl;
 
+ 
+    //4
+    setlocale(LC_ALL, "Russian");
+    _TCHAR szBuf[1000];
+    wcout << _TEXT("Введите текст: ");
+    wcin.getline(szBuf, _tcslen(szBuf));
+    int vowelCount = countVowelsRussian(szBuf);
+    wcout << _TEXT("Количество гласных: ") << vowelCount << endl;
+
+
+
+    //6
+    _TCHAR szBuf2[1000];
+    wcout << _TEXT("Введите текст: ");
+    wcin.getline(szBuf2, _tcslen(szBuf2));
+    int indexToRemove;
+    wcout << _TEXT("Введите номер символа для удаления: ");
+    wcin >> indexToRemove;
+    removeCharByIndex(szBuf2, indexToRemove);
+    wcout << _TEXT("Результат после удаления : ") << szBuf2 << endl;
+
+
+
+    //7
+    _TCHAR charToRemove;
+    wcout << _TEXT("Введите символ для удаления: ");
+    wcin >> charToRemove;
+    removeCharacter(szBuf2, charToRemove);
+    wcout << _TEXT("Результат после удаления : ") << szBuf2 << endl;
+
+
+    //8
+
+    int positionToInsert;
+    wcout << _TEXT("Введите позицию для вставки: ");
+    wcin >> positionToInsert;
+
+    _TCHAR charToInsert;
+    wcout << _TEXT("Введите символ для вставки: ");
+    wcin >> charToInsert;
+
+    insertCharAtPosition(szBuf2, positionToInsert, charToInsert);
+
+    wcout << _TEXT("Результат после вставки: ") << szBuf2 << endl;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//// определение символической константы _UNICODE
+//#define _CRT_SECURE_NO_WARNINGS
+//#define _UNICODE
+//#include <iostream>
+//#include <tchar.h>// для макросов windows
+//using namespace std;
+//
+//void main()
+//{
+//	_TCHAR szBuf3[15] = _TEXT("Hello,");
+//	_tcscat(szBuf3, _TEXT(" world!"));
+//	wcout << szBuf3 << '\n';
+//	cout << "The size of array: " << sizeof(szBuf3) << " bytes\n"; // 30 байт
+//
+//	unsigned short s = 34;
+//	cout << s << endl; // Ansi
+//	wcout << szBuf3 << endl; // Ansi Unicode
+//
+//
+//	system("pause");
+//}
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//// отсутствие символической константы 
+//#define _UNICODE
+//#include <iostream>
+//#include <tchar.h>
+//using namespace std;
+//
+//void main()
+//{
+//	_TCHAR szBuf3[15] = _TEXT("Hello");
+//	_tcscat(szBuf3, _TEXT(" world!"));
+//	wcout << szBuf3 << '\n';
+//	cout << "The size of array: " << sizeof(szBuf3) << " bytes\n"; // 15 байт
+//}
+//
