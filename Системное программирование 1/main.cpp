@@ -12,8 +12,8 @@ using namespace std;
 //1
 void ReplaceSpacesWithTabs(TCHAR* str) {
     while (*str) {
-        if (*str == _T(' ')) {
-            *str = _T('\t');
+        if (*str == _TEXT(' ')) {
+            *str = _TEXT('\t');
         }
         str++;
     }
@@ -26,10 +26,10 @@ void countCharacters( TCHAR* inputString, int& letterCount, int& digitCount, int
     while (*inputString) {
         TCHAR currentChar = *inputString;
 
-        if ((currentChar >= _T('A') && currentChar <= _T('Z')) || (currentChar >= _T('a') && currentChar <= _T('z'))) {
+        if ((currentChar >= _TEXT('A') && currentChar <= _TEXT('Z')) || (currentChar >= _TEXT('a') && currentChar <= _TEXT('z'))) {
             ++letterCount;
         }
-        else if (currentChar >= _T('0') && currentChar <= _T('9')) {
+        else if (currentChar >= _TEXT('0') && currentChar <= _TEXT('9')) {
             ++digitCount;
         }
         else {
@@ -43,7 +43,7 @@ void countCharacters( TCHAR* inputString, int& letterCount, int& digitCount, int
 
 //3
 bool isWhitespace(TCHAR c) {
-    return c == _T(' ') || c == _T('\t') || c == _T('\n') || c == _T('\r');
+    return c == _TEXT(' ') || c == _TEXT('\t') || c == _TEXT('\n') || c == _TEXT('\r');
 }
 
 int countWords( TCHAR* sentence) {
@@ -67,13 +67,13 @@ int countWords( TCHAR* sentence) {
 
 //4
 bool isVowelRussian(TCHAR c) {
-    return (c == _T('à') || c == _T('å') || c == _T('¸') ||
-        c == _T('è') || c == _T('î') || c == _T('ó') ||
-        c == _T('û') || c == _T('ý') || c == _T('þ') ||
-        c == _T('ÿ') || c == _T('À') || c == _T('Å') ||
-        c == _T('¨') || c == _T('È') || c == _T('Î') ||
-        c == _T('Ó') || c == _T('Û') || c == _T('Ý') ||
-        c == _T('Þ') || c == _T('ß'));
+    return (c == _TEXT('à') || c == _TEXT('å') || c == _TEXT('¸') ||
+        c == _TEXT('è') || c == _TEXT('î') || c == _TEXT('ó') ||
+        c == _TEXT('û') || c == _TEXT('ý') || c == _TEXT('þ') ||
+        c == _TEXT('ÿ') || c == _TEXT('À') || c == _TEXT('Å') ||
+        c == _TEXT('¨') || c == _TEXT('È') || c == _TEXT('Î') ||
+        c == _TEXT('Ó') || c == _TEXT('Û') || c == _TEXT('Ý') ||
+        c == _TEXT('Þ') || c == _TEXT('ß'));
 }
 
 int countVowelsRussian(TCHAR* text) {
