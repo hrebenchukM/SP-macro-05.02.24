@@ -27,16 +27,16 @@ void countCharacters( TCHAR* inputString, int& letterCount, int& digitCount, int
         TCHAR currentChar = *inputString;
 
         if ((currentChar >= _TEXT('A') && currentChar <= _TEXT('Z')) || (currentChar >= _TEXT('a') && currentChar <= _TEXT('z'))) {
-            ++letterCount;
+            letterCount++;
         }
         else if (currentChar >= _TEXT('0') && currentChar <= _TEXT('9')) {
-            ++digitCount;
+            digitCount++;
         }
         else {
-            ++otherCount;
+            otherCount++;
         }
 
-        ++inputString;
+        inputString++;
     }
 }
 
@@ -56,7 +56,7 @@ int countWords( TCHAR* sentence) {
         }
         else if (!inWord) {
             inWord = true;
-            ++wordCount;
+            wordCount++;
         }
 
         ++sentence;
@@ -67,24 +67,20 @@ int countWords( TCHAR* sentence) {
 
 //4
 bool isVowelRussian(TCHAR c) {
-    return (c == _TEXT('à') || c == _TEXT('å') || c == _TEXT('¸') ||
-        c == _TEXT('è') || c == _TEXT('î') || c == _TEXT('ó') ||
-        c == _TEXT('û') || c == _TEXT('ý') || c == _TEXT('þ') ||
-        c == _TEXT('ÿ') || c == _TEXT('À') || c == _TEXT('Å') ||
-        c == _TEXT('¨') || c == _TEXT('È') || c == _TEXT('Î') ||
-        c == _TEXT('Ó') || c == _TEXT('Û') || c == _TEXT('Ý') ||
-        c == _TEXT('Þ') || c == _TEXT('ß'));
+  
+    return (c >= _TEXT('à') && c <= _TEXT('ÿ')) || (c >= _TEXT('À') && c <= _TEXT('ß')) || c == _TEXT('¸') || c == _TEXT('¨');
 }
+
 
 int countVowelsRussian(TCHAR* text) {
     int vowelCount = 0;
 
     while (*text) {
         if (isVowelRussian(*text)) {
-            ++vowelCount;
+            vowelCount++;
         }
 
-        ++text;
+       text++;
     }
 
     return vowelCount;
